@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RF — The Complete Run · CWNA-109 · Module 1</title>
+<style>
+  :root{
+    --void:#06101f; --deep:#0b1b30; --panel:#0f243f; --panel2:#0c1d34;
+    --line:#1c3a5e; --surf:#1fb6ff; --surf-dim:#1378b0; --foam:#7fe7ff;
+    --ink:#e8f4ff; --mute:#8aa6c6; --good:#39d98a; --warn:#ffb347;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:
+      radial-gradient(1200px 600px at 85% -8%, #11304f 0%, transparent 58%),
+      radial-gradient(900px 520px at -12% 108%, #0d2746 0%, transparent 55%),
+      var(--void);
+    color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.6;
+    display:flex;flex-direction:column;align-items:center;
+    padding:22px 16px 80px;
+  }
+  .wrap{width:100%;max-width:780px}
+  header{margin-bottom:8px}
+  .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--surf);font-weight:700}
+  h1{
+    font-size:clamp(26px,5vw,38px);letter-spacing:-.02em;margin:6px 0 4px;font-weight:800;
+    background:linear-gradient(100deg,var(--foam),var(--surf) 58%,var(--surf-dim));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .sub{color:var(--mute);font-size:15px;margin:0}
+  .phasebar{display:flex;gap:6px;margin:16px 0 0;font-size:11px}
+  .phasebar span{flex:1;text-align:center;padding:5px 4px;border-radius:6px;border:1px solid var(--line);color:var(--mute);letter-spacing:.04em}
+  .phasebar span.on{background:var(--surf);border-color:var(--surf);color:#04111f;font-weight:700}
+  .toc{margin:18px 0 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel2);overflow:hidden}
+  .toc summary{list-style:none;cursor:pointer;padding:13px 16px;font-weight:700;font-size:14px;color:var(--foam);display:flex;align-items:center;justify-content:space-between}
+  .toc summary::-webkit-details-marker{display:none}
+  .toc summary .chev{transition:.2s;color:var(--mute)}
+  .toc[open] summary .chev{transform:rotate(90deg)}
+  .toc ol{margin:0;padding:4px 8px 12px;list-style:none;counter-reset:l}
+  .toc li{counter-increment:l}
+  .toc .grouplabel{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--surf-dim);padding:10px 12px 4px;font-weight:700}
+  .toc button{width:100%;text-align:left;background:transparent;border:0;color:var(--mute);padding:9px 12px;border-radius:9px;cursor:pointer;font-size:13.5px;display:flex;gap:10px}
+  .toc button::before{content:counter(l,decimal-leading-zero);color:var(--surf-dim);font-weight:700;font-variant-numeric:tabular-nums}
+  .toc button:hover{background:var(--panel);color:var(--ink)}
+  .toc button.cur{color:var(--foam);background:var(--panel)}
+  .rail{height:4px;background:var(--line);border-radius:4px;overflow:hidden;margin:6px 0 20px}
+  .rail>div{height:100%;width:0;background:linear-gradient(90deg,var(--surf-dim),var(--surf),var(--foam));transition:width .35s}
+  .lesson{background:linear-gradient(180deg,var(--panel),var(--deep));border:1px solid var(--line);border-radius:18px;padding:28px 26px;box-shadow:0 22px 50px -28px #000}
+  .lmeta{display:flex;align-items:center;gap:12px;margin-bottom:4px;flex-wrap:wrap}
+  .lmeta .n{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--surf);font-weight:700}
+  .lmeta .time{font-size:12px;color:var(--mute);border:1px solid var(--line);padding:2px 8px;border-radius:99px}
+  .lmeta .tier{font-size:11px;font-weight:700;letter-spacing:.06em;padding:2px 9px;border-radius:99px;text-transform:uppercase}
+  .tier.easy{color:var(--good);border:1px solid rgba(57,217,138,.4)}
+  .tier.mid{color:var(--surf);border:1px solid rgba(31,182,255,.4)}
+  .tier.hard{color:var(--warn);border:1px solid rgba(255,179,71,.4)}
+  .lesson h2{font-size:clamp(20px,3.2vw,26px);margin:6px 0 14px;letter-spacing:-.01em;line-height:1.25}
+  .lesson p{margin:0 0 14px;color:#d6e6f7}
+  .lesson p.lead{font-size:16.5px;color:var(--ink)}
+  .lesson strong{color:var(--foam);font-weight:700}
+  .lesson em{color:var(--surf);font-style:normal;font-weight:600}
+  .lesson ul{margin:0 0 14px;padding-left:0;list-style:none}
+  .lesson ul li{position:relative;padding:6px 0 6px 22px;color:#d6e6f7}
+  .lesson ul li::before{content:"";position:absolute;left:2px;top:14px;width:7px;height:7px;border-radius:2px;background:var(--surf);transform:rotate(45deg)}
+  .calc{font-family:monospace;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;color:var(--foam);font-size:14.5px;margin:0 0 16px;overflow-x:auto}
+  .calc .d{color:var(--mute)}
+  figure{margin:18px 0;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{margin-top:10px;font-size:13px;color:var(--mute);text-align:center}
+  .lock{margin:18px 0 4px;border-left:3px solid var(--surf);background:#0a2138;padding:13px 16px;border-radius:0 10px 10px 0}
+  .lock .h{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--surf);font-weight:700;margin-bottom:4px}
+  .lock p{margin:0;color:var(--ink);font-weight:600}
+  .check{margin-top:18px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .check summary{list-style:none;cursor:pointer;padding:13px 16px;font-weight:700;font-size:14px;color:var(--foam);background:var(--panel2);display:flex;gap:10px;align-items:center}
+  .check summary::-webkit-details-marker{display:none}
+  .check summary .q{color:var(--mute);font-weight:600}
+  .check .ans{padding:14px 16px;color:#d6e6f7;border-top:1px solid var(--line)}
+  .check[open] summary{color:var(--surf)}
+  .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .links a{text-decoration:none;font-size:13px;font-weight:600;padding:9px 13px;border-radius:10px;border:1px solid var(--line);color:var(--foam);display:inline-flex;gap:8px;align-items:center;transition:.15s}
+  .links a:hover{border-color:var(--surf);background:#0d2542}
+  .links a .ic{color:var(--surf)}
+  nav.move{display:flex;gap:12px;margin-top:22px;align-items:center}
+  .btn{border:0;border-radius:12px;padding:13px 20px;font-weight:700;font-size:14px;cursor:pointer;transition:.15s}
+  .btn.primary{background:var(--surf);color:#04111f}
+  .btn.primary:hover{background:var(--foam)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--mute)}
+  .btn.ghost:hover:not(:disabled){color:var(--foam);border-color:var(--surf-dim)}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+  .move .spacer{flex:1}
+  .pos{font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+  .finish{text-align:center;padding:30px 20px}
+  .finish .big{font-size:42px}
+  footer{margin-top:26px;text-align:center;color:var(--mute);font-size:12.5px;line-height:1.7}
+  footer b{color:var(--surf-dim)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media(max-width:560px){.lesson{padding:22px 18px}.phasebar{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">CWNA-109 · Module 1 · the complete RF run</div>
+    <h1>Radio Frequency, Start to Finish</h1>
+    <p class="sub">Twenty lessons, one topic, one finish line. Starts at "what is a wave" and ends at "I can read a survey like an engineer." Go one lesson at a time.</p>
+    <div class="phasebar" id="phasebar">
+      <span data-ph="0">Foundations · 1–6</span>
+      <span data-ph="1">The math · 7–13</span>
+      <span data-ph="2">The hard layer · 14–20</span>
+    </div>
+  </header>
+
+  <details class="toc" id="toc">
+    <summary>All 20 lessons <span class="chev">›</span></summary>
+    <div id="toclist"></div>
+  </details>
+
+  <div class="rail"><div id="railfill"></div></div>
+  <div id="stage" class="lesson"></div>
+
+  <nav class="move">
+    <button class="btn ghost" id="prev">‹ Back</button>
+    <span class="pos" id="pos"></span>
+    <span class="spacer"></span>
+    <button class="btn primary" id="next">Next lesson ›</button>
+  </nav>
+
+  <footer>
+    Module 1 of 6 · the full RF topic in one run.<br>
+    <b>Finish all 20, then drill practice questions — that's RF genuinely yours.</b>
+  </footer>
+</div>
+
+<script>
+const SVG = {
+  wave:`<svg viewBox="0 0 600 200" role="img" aria-label="A radio wave showing wavelength and amplitude">
+    <line x1="20" y1="100" x2="580" y2="100" stroke="#1c3a5e" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <path d="M40 100 C 90 20, 140 20, 190 100 S 290 180, 340 100 S 440 20, 490 100 S 560 150, 580 120" fill="none" stroke="#1fb6ff" stroke-width="3"/>
+    <line x1="40" y1="100" x2="190" y2="100" stroke="#7fe7ff" stroke-width="2"/>
+    <line x1="40" y1="100" x2="40" y2="60" stroke="#7fe7ff" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="190" y1="100" x2="190" y2="60" stroke="#7fe7ff" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="115" y="52" fill="#7fe7ff" font-size="14" text-anchor="middle" font-family="monospace">wavelength (λ)</text>
+    <line x1="115" y1="100" x2="115" y2="46" stroke="#ffb347" stroke-width="2"/>
+    <text x="128" y="74" fill="#ffb347" font-size="13" font-family="monospace">amplitude</text>
+    <text x="300" y="190" fill="#8aa6c6" font-size="12" text-anchor="middle">one full cycle = one wavelength · height = amplitude (signal strength)</text></svg>`,
+  freq:`<svg viewBox="0 0 600 220" role="img" aria-label="Low versus high frequency waves">
+    <text x="20" y="30" fill="#7fe7ff" font-size="13" font-family="monospace">LOW frequency — long wave — travels far, penetrates well</text>
+    <path d="M20 70 C 80 30, 140 30, 200 70 S 320 110, 380 70 S 500 30, 560 70" fill="none" stroke="#39d98a" stroke-width="3"/>
+    <text x="20" y="150" fill="#ffb347" font-size="13" font-family="monospace">HIGH frequency — short wave — more data, shorter reach</text>
+    <path d="M20 185 C 35 165, 50 165, 65 185 S 95 205, 110 185 S 140 165, 155 185 S 185 205, 200 185 S 230 165, 245 185 S 275 205, 290 185 S 320 165, 335 185 S 365 205, 380 185 S 410 165, 425 185 S 455 205, 470 185 S 500 165, 515 185 S 545 205, 560 185" fill="none" stroke="#ffb347" stroke-width="3"/></svg>`,
+  bands:`<svg viewBox="0 0 600 170" role="img" aria-label="The three Wi-Fi bands">
+    <rect x="20" y="40" width="150" height="60" rx="8" fill="#0d2a22" stroke="#39d98a" stroke-width="2"/>
+    <text x="95" y="66" fill="#39d98a" font-size="16" text-anchor="middle" font-weight="bold">2.4 GHz</text>
+    <text x="95" y="86" fill="#8aa6c6" font-size="11" text-anchor="middle">far reach · crowded</text>
+    <rect x="225" y="40" width="150" height="60" rx="8" fill="#0a2138" stroke="#1fb6ff" stroke-width="2"/>
+    <text x="300" y="66" fill="#1fb6ff" font-size="16" text-anchor="middle" font-weight="bold">5 GHz</text>
+    <text x="300" y="86" fill="#8aa6c6" font-size="11" text-anchor="middle">more channels · workhorse</text>
+    <rect x="430" y="40" width="150" height="60" rx="8" fill="#2a1f0d" stroke="#ffb347" stroke-width="2"/>
+    <text x="505" y="66" fill="#ffb347" font-size="16" text-anchor="middle" font-weight="bold">6 GHz</text>
+    <text x="505" y="86" fill="#8aa6c6" font-size="11" text-anchor="middle">clean · short reach (6E)</text>
+    <text x="300" y="135" fill="#8aa6c6" font-size="12" text-anchor="middle">Left → right: shorter range, more space, less interference</text></svg>`,
+  behave:`<svg viewBox="0 0 600 230" role="img" aria-label="RF behaviours">
+    <rect x="250" y="20" width="20" height="190" fill="#1c3a5e"/><text x="260" y="14" fill="#8aa6c6" font-size="11" text-anchor="middle">wall</text>
+    <line x1="40" y1="45" x2="250" y2="45" stroke="#1fb6ff" stroke-width="2.5"/>
+    <line x1="250" y1="45" x2="60" y2="75" stroke="#1fb6ff" stroke-width="2.5" stroke-dasharray="5 4"/>
+    <text x="120" y="38" fill="#1fb6ff" font-size="12">reflection — bounces off</text>
+    <line x1="40" y1="110" x2="250" y2="110" stroke="#39d98a" stroke-width="2.5"/>
+    <line x1="270" y1="110" x2="320" y2="110" stroke="#39d98a" stroke-width="1" opacity="0.4"/>
+    <text x="120" y="103" fill="#39d98a" font-size="12">absorption — soaked up, weakened</text>
+    <line x1="40" y1="170" x2="250" y2="170" stroke="#ffb347" stroke-width="2.5"/>
+    <path d="M270 170 Q 300 200, 340 205" fill="none" stroke="#ffb347" stroke-width="2.5" stroke-dasharray="5 4"/>
+    <text x="120" y="163" fill="#ffb347" font-size="12">diffraction — bends around edges</text>
+    <text x="300" y="225" fill="#8aa6c6" font-size="11" text-anchor="middle">every obstacle does one or more of these to your signal</text></svg>`,
+  db:`<svg viewBox="0 0 600 210" role="img" aria-label="The 3s and 10s decibel rule">
+    <text x="300" y="26" fill="#7fe7ff" font-size="15" text-anchor="middle" font-weight="bold">The only RF math you must reflex: 3s &amp; 10s</text>
+    <g font-family="monospace" font-size="15">
+      <rect x="60" y="55" width="220" height="40" rx="6" fill="#0d2a22" stroke="#39d98a"/><text x="170" y="80" fill="#39d98a" text-anchor="middle">+3 dB  →  ×2 power</text>
+      <rect x="320" y="55" width="220" height="40" rx="6" fill="#2a0f16" stroke="#e0556b"/><text x="430" y="80" fill="#ff8aa0" text-anchor="middle">−3 dB  →  ÷2 power</text>
+      <rect x="60" y="110" width="220" height="40" rx="6" fill="#0d2a22" stroke="#39d98a"/><text x="170" y="135" fill="#39d98a" text-anchor="middle">+10 dB →  ×10 power</text>
+      <rect x="320" y="110" width="220" height="40" rx="6" fill="#2a0f16" stroke="#e0556b"/><text x="430" y="135" fill="#ff8aa0" text-anchor="middle">−10 dB →  ÷10 power</text></g>
+    <text x="300" y="185" fill="#8aa6c6" font-size="12" text-anchor="middle">Chain them: +13 dB = ×2 ×10 = ×20.  −6 dB = ÷2 ÷2 = ÷4.</text></svg>`,
+  units:`<svg viewBox="0 0 600 200" role="img" aria-label="dBm versus dBi">
+    <rect x="40" y="40" width="240" height="120" rx="10" fill="#0a2138" stroke="#1fb6ff" stroke-width="2"/>
+    <text x="160" y="72" fill="#1fb6ff" font-size="18" text-anchor="middle" font-weight="bold">dBm</text>
+    <text x="160" y="100" fill="#e8f4ff" font-size="13" text-anchor="middle">absolute power</text>
+    <text x="160" y="122" fill="#8aa6c6" font-size="12" text-anchor="middle">"how strong, vs 1 mW"</text>
+    <text x="160" y="144" fill="#8aa6c6" font-size="12" text-anchor="middle">e.g. −65 dBm signal</text>
+    <rect x="320" y="40" width="240" height="120" rx="10" fill="#2a1f0d" stroke="#ffb347" stroke-width="2"/>
+    <text x="440" y="72" fill="#ffb347" font-size="18" text-anchor="middle" font-weight="bold">dBi</text>
+    <text x="440" y="100" fill="#e8f4ff" font-size="13" text-anchor="middle">antenna gain</text>
+    <text x="440" y="122" fill="#8aa6c6" font-size="12" text-anchor="middle">"how focused, vs isotropic"</text>
+    <text x="440" y="144" fill="#8aa6c6" font-size="12" text-anchor="middle">e.g. 6 dBi antenna</text>
+    <text x="300" y="185" fill="#8aa6c6" font-size="12" text-anchor="middle">"m" = a real power level. "i" = a comparison to a perfect point source.</text></svg>`,
+  snr:`<svg viewBox="0 0 600 220" role="img" aria-label="Signal to noise ratio">
+    <line x1="50" y1="190" x2="560" y2="190" stroke="#1c3a5e"/><line x1="50" y1="190" x2="50" y2="30" stroke="#1c3a5e"/>
+    <rect x="90" y="60" width="120" height="130" fill="#0a2138" stroke="#1fb6ff" stroke-width="2"/>
+    <text x="150" y="50" fill="#1fb6ff" font-size="13" text-anchor="middle">signal −65 dBm</text>
+    <rect x="90" y="150" width="430" height="40" fill="#2a0f16" stroke="#e0556b" stroke-width="1.5" opacity="0.85"/>
+    <text x="350" y="175" fill="#ff8aa0" font-size="13" text-anchor="middle">noise floor −90 dBm</text>
+    <line x1="300" y1="60" x2="300" y2="150" stroke="#39d98a" stroke-width="2.5"/>
+    <line x1="294" y1="66" x2="306" y2="66" stroke="#39d98a" stroke-width="2.5"/>
+    <line x1="294" y1="144" x2="306" y2="144" stroke="#39d98a" stroke-width="2.5"/>
+    <text x="315" y="110" fill="#39d98a" font-size="14" font-weight="bold">SNR = 25 dB</text>
+    <text x="300" y="212" fill="#8aa6c6" font-size="12" text-anchor="middle">SNR is the gap between your signal and the noise — bigger gap, faster link.</text></svg>`,
+  eirp:`<svg viewBox="0 0 600 180" role="img" aria-label="EIRP equation">
+    <g font-family="monospace">
+      <rect x="20" y="60" width="120" height="56" rx="8" fill="#0a2138" stroke="#1fb6ff" stroke-width="2"/>
+      <text x="80" y="84" fill="#1fb6ff" font-size="14" text-anchor="middle">Tx power</text><text x="80" y="104" fill="#8aa6c6" font-size="12" text-anchor="middle">20 dBm</text>
+      <text x="160" y="94" fill="#ff8aa0" font-size="24" text-anchor="middle">−</text>
+      <rect x="185" y="60" width="120" height="56" rx="8" fill="#2a0f16" stroke="#e0556b" stroke-width="2"/>
+      <text x="245" y="84" fill="#ff8aa0" font-size="14" text-anchor="middle">cable loss</text><text x="245" y="104" fill="#8aa6c6" font-size="12" text-anchor="middle">3 dB</text>
+      <text x="325" y="94" fill="#39d98a" font-size="24" text-anchor="middle">+</text>
+      <rect x="350" y="60" width="120" height="56" rx="8" fill="#2a1f0d" stroke="#ffb347" stroke-width="2"/>
+      <text x="410" y="84" fill="#ffb347" font-size="14" text-anchor="middle">ant. gain</text><text x="410" y="104" fill="#8aa6c6" font-size="12" text-anchor="middle">6 dBi</text>
+      <text x="492" y="94" fill="#7fe7ff" font-size="24" text-anchor="middle">=</text>
+      <rect x="515" y="60" width="70" height="56" rx="8" fill="#0d2a22" stroke="#39d98a" stroke-width="2"/>
+      <text x="550" y="84" fill="#39d98a" font-size="14" text-anchor="middle">EIRP</text><text x="550" y="104" fill="#7fe7ff" font-size="13" text-anchor="middle">23 dBm</text></g>
+    <text x="300" y="150" fill="#8aa6c6" font-size="12" text-anchor="middle">EIRP = the actual power leaving the antenna — and the number regulators cap.</text></svg>`,
+  mwdbm:`<svg viewBox="0 0 600 210" role="img" aria-label="milliwatt to dBm ladder">
+    <text x="300" y="24" fill="#7fe7ff" font-size="14" text-anchor="middle" font-weight="bold">Start at 0 dBm = 1 mW, then climb with 3s &amp; 10s</text>
+    <g font-family="monospace" font-size="14">
+      <rect x="120" y="42" width="360" height="26" rx="5" fill="#0c1d34" stroke="#1c3a5e"/><text x="135" y="60" fill="#e8f4ff">0 dBm</text><text x="465" y="60" fill="#7fe7ff" text-anchor="end">1 mW</text>
+      <rect x="120" y="74" width="360" height="26" rx="5" fill="#0c1d34" stroke="#1c3a5e"/><text x="135" y="92" fill="#e8f4ff">+10 dBm</text><text x="465" y="92" fill="#7fe7ff" text-anchor="end">10 mW</text>
+      <rect x="120" y="106" width="360" height="26" rx="5" fill="#0c1d34" stroke="#1c3a5e"/><text x="135" y="124" fill="#e8f4ff">+20 dBm</text><text x="465" y="124" fill="#7fe7ff" text-anchor="end">100 mW</text>
+      <rect x="120" y="138" width="360" height="26" rx="5" fill="#0d2a22" stroke="#39d98a"/><text x="135" y="156" fill="#39d98a">+30 dBm</text><text x="465" y="156" fill="#39d98a" text-anchor="end">1000 mW = 1 W</text></g>
+    <text x="300" y="190" fill="#8aa6c6" font-size="12" text-anchor="middle">Each +10 dB is ×10. So 30 dBm = ×10 ×10 ×10 = 1000 mW = 1 watt.</text></svg>`,
+  fspl:`<svg viewBox="0 0 600 220" role="img" aria-label="signal falls with distance">
+    <line x1="50" y1="180" x2="560" y2="180" stroke="#1c3a5e"/><line x1="50" y1="180" x2="50" y2="30" stroke="#1c3a5e"/>
+    <text x="40" y="40" fill="#8aa6c6" font-size="11" text-anchor="end">strong</text><text x="40" y="178" fill="#8aa6c6" font-size="11" text-anchor="end">weak</text>
+    <path d="M55 45 C 150 120, 250 155, 560 172" fill="none" stroke="#1fb6ff" stroke-width="3"/>
+    <text x="300" y="205" fill="#8aa6c6" font-size="12" text-anchor="middle">distance →</text>
+    <text x="300" y="125" fill="#7fe7ff" font-size="12" text-anchor="middle">most loss happens early — double the distance, lose ~6 dB</text></svg>`,
+  link:`<svg viewBox="0 0 600 230" role="img" aria-label="link budget">
+    <g font-family="monospace" font-size="13">
+      <rect x="60" y="30" width="200" height="30" rx="5" fill="#0a2138" stroke="#1fb6ff"/><text x="160" y="50" fill="#1fb6ff" text-anchor="middle">EIRP  +23 dBm</text>
+      <text x="290" y="50" fill="#ff8aa0">− FSPL (path loss)</text>
+      <rect x="60" y="90" width="200" height="30" rx="5" fill="#0c1d34" stroke="#1c3a5e"/><text x="160" y="110" fill="#e8f4ff" text-anchor="middle">received  −68 dBm</text>
+      <text x="290" y="110" fill="#8aa6c6">what the radio hears</text>
+      <rect x="60" y="150" width="200" height="30" rx="5" fill="#2a0f16" stroke="#e0556b"/><text x="160" y="170" fill="#ff8aa0" text-anchor="middle">sensitivity  −82 dBm</text>
+      <text x="290" y="170" fill="#8aa6c6">radio's minimum</text>
+      <line x1="40" y1="105" x2="40" y2="165" stroke="#39d98a" stroke-width="2.5"/><text x="32" y="138" fill="#39d98a" text-anchor="end" font-size="12">14 dB</text></g>
+    <text x="300" y="212" fill="#8aa6c6" font-size="12" text-anchor="middle">Fade margin = received − sensitivity = headroom before the link drops.</text></svg>`,
+  ant:`<svg viewBox="0 0 600 200" role="img" aria-label="antenna patterns">
+    <g><text x="100" y="30" fill="#1fb6ff" font-size="12" text-anchor="middle">Omni</text>
+      <ellipse cx="100" cy="110" rx="55" ry="30" fill="none" stroke="#1fb6ff" stroke-width="2"/>
+      <ellipse cx="100" cy="110" rx="30" ry="55" fill="none" stroke="#1fb6ff" stroke-width="1" opacity="0.4"/>
+      <circle cx="100" cy="110" r="3" fill="#7fe7ff"/></g>
+    <g><text x="300" y="30" fill="#ffb347" font-size="12" text-anchor="middle">Semi-directional</text>
+      <path d="M300 110 Q 360 60, 410 110 Q 360 160, 300 110" fill="none" stroke="#ffb347" stroke-width="2"/>
+      <circle cx="300" cy="110" r="3" fill="#ffd591"/></g>
+    <g><text x="510" y="30" fill="#39d98a" font-size="12" text-anchor="middle">Highly directional</text>
+      <path d="M470 110 L 575 92 L 575 128 Z" fill="none" stroke="#39d98a" stroke-width="2"/>
+      <circle cx="470" cy="110" r="3" fill="#7dffb8"/></g>
+    <text x="300" y="188" fill="#8aa6c6" font-size="12" text-anchor="middle">Same energy, focused differently: all-around → a beam → a narrow spear.</text></svg>`,
+  beam:`<svg viewBox="0 0 600 190" role="img" aria-label="beamwidth">
+    <circle cx="90" cy="100" r="4" fill="#7fe7ff"/>
+    <path d="M90 100 L 520 50 L 520 150 Z" fill="rgba(31,182,255,0.12)" stroke="#1fb6ff" stroke-width="2"/>
+    <line x1="90" y1="100" x2="540" y2="100" stroke="#8aa6c6" stroke-dasharray="4 4"/>
+    <text x="300" y="95" fill="#8aa6c6" font-size="11">boresight (strongest)</text>
+    <text x="450" y="40" fill="#1fb6ff" font-size="12">−3 dB edge</text>
+    <text x="450" y="170" fill="#1fb6ff" font-size="12">−3 dB edge</text>
+    <text x="300" y="182" fill="#8aa6c6" font-size="12" text-anchor="middle">Beamwidth = the angle between the half-power (−3 dB) edges. Higher gain = narrower.</text></svg>`,
+  qam:`<svg viewBox="0 0 600 200" role="img" aria-label="modulation constellations">
+    <g><text x="90" y="28" fill="#1fb6ff" font-size="12" text-anchor="middle">BPSK · 1 bit</text>
+      <line x1="30" y1="110" x2="150" y2="110" stroke="#1c3a5e"/><line x1="90" y1="60" x2="90" y2="160" stroke="#1c3a5e"/>
+      <circle cx="55" cy="110" r="4" fill="#1fb6ff"/><circle cx="125" cy="110" r="4" fill="#1fb6ff"/></g>
+    <g><text x="300" y="28" fill="#ffb347" font-size="12" text-anchor="middle">QPSK · 2 bits</text>
+      <line x1="240" y1="110" x2="360" y2="110" stroke="#1c3a5e"/><line x1="300" y1="60" x2="300" y2="160" stroke="#1c3a5e"/>
+      <circle cx="275" cy="85" r="4" fill="#ffb347"/><circle cx="325" cy="85" r="4" fill="#ffb347"/>
+      <circle cx="275" cy="135" r="4" fill="#ffb347"/><circle cx="325" cy="135" r="4" fill="#ffb347"/></g>
+    <g><text x="510" y="28" fill="#39d98a" font-size="12" text-anchor="middle">16-QAM · 4 bits</text>
+      <line x1="450" y1="110" x2="575" y2="110" stroke="#1c3a5e"/><line x1="510" y1="60" x2="510" y2="160" stroke="#1c3a5e"/>
+      <g fill="#39d98a">
+      <circle cx="478" cy="82" r="3"/><circle cx="499" cy="82" r="3"/><circle cx="521" cy="82" r="3"/><circle cx="542" cy="82" r="3"/>
+      <circle cx="478" cy="100" r="3"/><circle cx="499" cy="100" r="3"/><circle cx="521" cy="100" r="3"/><circle cx="542" cy="100" r="3"/>
+      <circle cx="478" cy="120" r="3"/><circle cx="499" cy="120" r="3"/><circle cx="521" cy="120" r="3"/><circle cx="542" cy="120" r="3"/>
+      <circle cx="478" cy="138" r="3"/><circle cx="499" cy="138" r="3"/><circle cx="521" cy="138" r="3"/><circle cx="542" cy="138" r="3"/></g></g>
+    <text x="300" y="188" fill="#8aa6c6" font-size="12" text-anchor="middle">More points = more bits per symbol = more speed, but they need cleaner signal (higher SNR).</text></svg>`,
+  chan:`<svg viewBox="0 0 600 200" role="img" aria-label="channel layout">
+    <text x="60" y="30" fill="#39d98a" font-size="12">2.4 GHz — only 3 clean 20 MHz channels</text>
+    <rect x="60" y="42" width="90" height="28" rx="4" fill="#0d2a22" stroke="#39d98a"/><text x="105" y="61" fill="#39d98a" font-size="12" text-anchor="middle">Ch 1</text>
+    <rect x="255" y="42" width="90" height="28" rx="4" fill="#0d2a22" stroke="#39d98a"/><text x="300" y="61" fill="#39d98a" font-size="12" text-anchor="middle">Ch 6</text>
+    <rect x="450" y="42" width="90" height="28" rx="4" fill="#0d2a22" stroke="#39d98a"/><text x="495" y="61" fill="#39d98a" font-size="12" text-anchor="middle">Ch 11</text>
+    <text x="60" y="110" fill="#1fb6ff" font-size="12">5 GHz — many channels, can bond for speed</text>
+    <rect x="60" y="122" width="55" height="26" rx="4" fill="#0a2138" stroke="#1fb6ff"/><text x="87" y="140" fill="#1fb6ff" font-size="11" text-anchor="middle">20</text>
+    <rect x="120" y="122" width="55" height="26" rx="4" fill="#0a2138" stroke="#1fb6ff"/><text x="147" y="140" fill="#1fb6ff" font-size="11" text-anchor="middle">20</text>
+    <rect x="60" y="154" width="115" height="20" rx="4" fill="rgba(31,182,255,0.12)" stroke="#1fb6ff"/><text x="117" y="169" fill="#7fe7ff" font-size="11" text-anchor="middle">bonded 40 MHz</text>
+    <text x="300" y="192" fill="#8aa6c6" font-size="12" text-anchor="middle">Bonding joins channels for more speed — but eats spectrum and raises interference risk.</text></svg>`
+};
+
+const L = [
+/* ---------- PHASE 0 · FOUNDATIONS (1–6) ---------- */
+{ ph:0, tier:"easy", t:"What RF actually is", time:"3 min",
+  body:`<p class="lead">Wi-Fi is radio. Everything else is detail built on that one fact.</p>
+  <p>An access point uses your data to shape an invisible wave of <strong>radio-frequency (RF) energy</strong>, then pushes it out of an antenna into the air. Another radio catches the wave and turns it back into data. No cables, no visible light — just energy oscillating as it travels.</p>
+  <p>Because it's a physical wave in a messy physical world, it weakens with distance, bounces, gets blocked, and bumps into other waves. <em>Almost every Wi-Fi problem you'll troubleshoot is really an RF problem.</em> That's why RF comes first.</p>
+  <figure>${SVG.wave}<figcaption>A single RF wave. The two things to read off it: its length and its height.</figcaption></figure>`,
+  lock:"Wi-Fi is just radio waves carrying data through the air. Master the wave and the rest is detail.",
+  q:"Why does RF behaviour matter so much for Wi-Fi?",
+  a:"Because Wi-Fi <em>is</em> RF travelling through a physical space full of walls and other signals. It weakens, reflects and gets blocked — so most real-world Wi-Fi issues are RF issues at heart.",
+  links:[["watch","Five Fundamentals of RF for WLAN","https://www.youtube.com/watch?v=dwDRAqfA7GI"]] },
+
+{ ph:0, tier:"easy", t:"Wavelength &amp; frequency", time:"4 min",
+  body:`<p>Look back at that wave. Two measurements describe it.</p>
+  <ul>
+    <li><strong>Wavelength</strong> — the physical length of one full cycle, crest to crest.</li>
+    <li><strong>Frequency</strong> — how many cycles pass a point each second, in hertz (Hz). A billion per second = one gigahertz (GHz).</li>
+  </ul>
+  <p>They're locked together: <em>higher frequency means shorter wavelength</em>, always. A 2.4 GHz wave is physically longer than a 5 GHz wave.</p>
+  <p>Why you care: longer waves (lower frequency) travel further and slip through walls. Shorter waves carry more data but tire faster and get blocked more. That single trade-off shapes every design choice you'll make.</p>
+  <figure>${SVG.freq}<figcaption>Low frequency reaches further; high frequency carries more but fades faster.</figcaption></figure>`,
+  lock:"Higher frequency = shorter wavelength = more data but less range. Lower frequency = longer reach. Inversely linked.",
+  q:"A 5 GHz signal vs a 2.4 GHz signal — which travels further, and why?",
+  a:"2.4 GHz. Lower frequency, longer wavelength, so it loses less energy over distance and penetrates obstacles better. 5 GHz trades reach for capacity.",
+  links:[["watch","Wireless RF fundamentals (CWNA)","https://www.youtube.com/watch?v=p2_bWFl3t8o"]] },
+
+{ ph:0, tier:"easy", t:"Amplitude &amp; phase", time:"3 min",
+  body:`<p>Two more properties and you've got the full set.</p>
+  <ul>
+    <li><strong>Amplitude</strong> — the height of the wave. This is signal <em>strength</em>. When you read "−65 dBm" on a survey, you're reading amplitude.</li>
+    <li><strong>Phase</strong> — where the wave is in its cycle at a given instant (0–360°). Abstract alone, but it matters when two copies of a signal meet.</li>
+  </ul>
+  <p>Two waves <em>in phase</em> reinforce and get stronger. Two waves <em>out of phase</em> cancel and get weaker — at 180° they can wipe each other to nothing. Hold that thought; it's the root of multipath, coming soon.</p>`,
+  lock:"Amplitude = signal strength (height). Phase = timing in the cycle. In-phase waves add; out-of-phase waves cancel.",
+  q:"What does amplitude represent in a Wi-Fi signal?",
+  a:"Signal strength. A higher-amplitude (taller) wave is a stronger received signal — what a value like −65 dBm is telling you.",
+  links:[["read","Amplitude, power &amp; dB explained","https://www.networkacademy.io/ccna/wireless/understanding-amplitude-power-and-db"]] },
+
+{ ph:0, tier:"easy", t:"The three bands: 2.4, 5 &amp; 6 GHz", time:"4 min",
+  body:`<p>Wi-Fi lives in a few unlicensed bands anyone can use without a permit. There are three, and the trade-off plays out across them.</p>
+  <ul>
+    <li><strong>2.4 GHz</strong> — longest reach, best wall penetration. But narrow, crowded, and only three clean channels. Great range, painful capacity.</li>
+    <li><strong>5 GHz</strong> — the modern workhorse. Shorter reach, far more channels, much less congestion.</li>
+    <li><strong>6 GHz</strong> — newest (Wi-Fi 6E/7). Huge clean spectrum, shortest range. Brilliant indoors with APs placed close.</li>
+  </ul>
+  <figure>${SVG.bands}<figcaption>Move up in frequency: gain spectrum, lose range. Pick the band for the job.</figcaption></figure>`,
+  lock:"2.4 GHz = reach, crowded. 5 GHz = workhorse, lots of channels. 6 GHz = clean, fast, short-range.",
+  q:"Why is 2.4 GHz often a poor choice in a dense office despite its great range?",
+  a:"Only three non-overlapping channels and heavy non-Wi-Fi interference. In density that means congestion, so 5/6 GHz usually serves capacity far better.",
+  links:[["read","Radio frequencies: 7 CWNA questions","https://www.cbtnuggets.com/blog/technology/networking/radio-frequencies-7-most-asked-questions-for-the-cwna"]] },
+
+{ ph:0, tier:"easy", t:"How RF behaves in the real world", time:"5 min",
+  body:`<p>Indoors, a wave hits stuff, and five things can happen. These come up constantly on the exam and on site.</p>
+  <ul>
+    <li><strong>Reflection</strong> — bounces off a smooth, large surface (metal, glass, concrete).</li>
+    <li><strong>Absorption</strong> — the material soaks up energy and the wave weakens. Walls, and especially <em>water</em> — including the human body.</li>
+    <li><strong>Scattering</strong> — hits a rough surface or many tiny objects and splinters into weak waves (rain, dust, mesh).</li>
+    <li><strong>Refraction</strong> — bends passing through a different-density medium (glass, air layers).</li>
+    <li><strong>Diffraction</strong> — bends <em>around</em> an obstacle's edge, leaving an RF "shadow".</li>
+  </ul>
+  <figure>${SVG.behave}<figcaption>Real environments do several of these at once to your signal.</figcaption></figure>`,
+  lock:"Reflection (bounce), Absorption (soak), Scattering (splinter), Refraction (bend through), Diffraction (bend around). Water absorbs — and people are mostly water.",
+  q:"Signal drops sharply behind a tall metal shelving unit. Which behaviours are at play?",
+  a:"Reflection off the metal and diffraction around its edges, leaving an RF shadow behind it. Metal reflects rather than passing signal, so coverage drops in its lee.",
+  links:[["watch","CWNA RF fundamentals — behaviour","https://www.youtube.com/watch?v=gaFnz2Led9s"]] },
+
+{ ph:0, tier:"mid", t:"Multipath &amp; the Fresnel zone", time:"4 min",
+  body:`<p>Now those reflections come back — this is where phase pays off.</p>
+  <p><strong>Multipath</strong> is one signal reaching the receiver by several paths: one direct, plus bounced copies arriving slightly later and out of step. Depending on timing it can mildly boost or partly cancel the signal — older gear hated it; modern MIMO exploits it.</p>
+  <p>The <strong>Fresnel zone</strong> is the cigar-shaped space around the straight line between two antennas. A clear direct line isn't enough — that zone around it must be mostly clear too, or obstacles clip the signal. It matters most on longer outdoor links: "line of sight needs breathing room."</p>`,
+  lock:"Multipath = one signal arriving by several reflected paths, in or out of phase. Fresnel zone = the clearance space around the direct path that must also stay clear.",
+  q:"Why isn't a clear straight line between two outdoor antennas always enough?",
+  a:"The Fresnel zone — the wider region around that line — also needs to be clear. Obstacles intruding into it clip the wave and cause loss even if the direct line looks open.",
+  links:[["read","RF best practices &amp; concepts","https://lowpowerlab.com/guide/rf-best-practices/decibels/"]] },
+
+/* ---------- PHASE 1 · THE MATH (7–13) ---------- */
+{ ph:1, tier:"mid", t:"Gain, loss &amp; the decibel (3s &amp; 10s)", time:"5 min",
+  body:`<p>Signals get stronger (<strong>gain</strong>) and weaker (<strong>loss</strong>) constantly. We measure that in <strong>decibels (dB)</strong>. The unlock: a decibel is a <em>ratio</em>, not a fixed amount. It's logarithmic, which actually makes the maths easy.</p>
+  <ul>
+    <li><strong>3 dB</strong> = double or halve the power (+3 → ×2, −3 → ÷2)</li>
+    <li><strong>10 dB</strong> = ten times or one tenth (+10 → ×10, −10 → ÷10)</li>
+  </ul>
+  <p>That's the "rule of 3s and 10s." Chain them for any value: +13 dB is +10 then +3 = ×10 ×2 = ×20. −6 dB is ÷2 ÷2 = ÷4. Drill this to reflex — it's the most-used RF skill there is.</p>
+  <figure>${SVG.db}<figcaption>Memorise these four. Everything else in RF power is chaining them.</figcaption></figure>`,
+  lock:"dB is a ratio. +3 dB doubles, −3 dB halves, +10 dB ×10, −10 dB ÷10. Chain for any value.",
+  q:"An amplifier adds 13 dB. By what factor does it multiply power?",
+  a:"×20. 13 dB = 10 + 3 → ×10 then ×2 = ×20.",
+  links:[["read","dB, dBm &amp; dBi — the decibel guide","https://www.nextantennas.com/article_3_db_dbm_dbi.php"]] },
+
+{ ph:1, tier:"mid", t:"Absolute vs relative: dBm, dBi, dBd", time:"4 min",
+  body:`<p>Plain "dB" is a change. Sometimes you need an <em>absolute</em> level — that's where the suffix matters.</p>
+  <ul>
+    <li><strong>dBm</strong> — power relative to <em>1 milliwatt</em>. An actual signal level. 0 dBm = 1 mW. Surveys show received signal in dBm (e.g. −65 dBm).</li>
+    <li><strong>dBi</strong> — antenna gain relative to a theoretical <em>isotropic</em> radiator. A comparison, not a power level.</li>
+    <li><strong>dBd</strong> — gain relative to a <em>dipole</em>. Convert: 0 dBd ≈ 2.14 dBi.</li>
+  </ul>
+  <figure>${SVG.units}<figcaption>"m" = a real power level. "i" / "d" = how much an antenna focuses, vs a reference.</figcaption></figure>`,
+  lock:"dBm = absolute power vs 1 mW. dBi = antenna gain vs isotropic. dBd = gain vs a dipole (0 dBd ≈ 2.14 dBi).",
+  q:"An AP reports a client at −70 dBm using a 5 dBi antenna. Which is a real power level, which is a comparison?",
+  a:"−70 dBm is the real, absolute received power. 5 dBi is a comparison — how much the antenna concentrates energy vs an ideal isotropic source.",
+  links:[["watch","WiFi full course (802.11) playlist","https://www.youtube.com/playlist?list=PL2kEo_196iW7aOFNPOz5dSpP5uQe-zDOY"]] },
+
+{ ph:1, tier:"mid", t:"RSSI, noise floor &amp; SNR", time:"4 min",
+  body:`<p>Three numbers you'll stare at on every survey.</p>
+  <ul>
+    <li><strong>RSSI</strong> — Received Signal Strength, in dBm. Closer to zero is stronger: −50 excellent, −70 okay, −85 struggling.</li>
+    <li><strong>Noise floor</strong> — background RF din from everything that isn't your signal (often ~−90 dBm). Higher (closer to zero) is worse.</li>
+    <li><strong>SNR</strong> — the <em>gap</em> between signal and noise, in dB. −65 dBm over −90 dBm = 25 dB SNR.</li>
+  </ul>
+  <p>The key insight: <em>SNR, not raw signal, drives speed.</em> A strong signal in a noisy room still performs badly because the gap is small. Aim for ~25 dB+ SNR; below ~10 dB the link falls apart.</p>
+  <figure>${SVG.snr}<figcaption>The data rate depends on this gap, not on the signal alone.</figcaption></figure>`,
+  lock:"RSSI = signal (dBm). Noise floor = background RF (dBm). SNR = the gap (dB), and the gap sets your speed. Target ~25 dB+.",
+  q:"Two spots both read −60 dBm but one is much slower. Likely cause?",
+  a:"A higher noise floor at the slow spot. Same signal, more noise, smaller SNR — so the radio drops to a lower data rate. SNR tells the story, not signal alone.",
+  links:[["read","RSSI, noise &amp; SNR for CWNA","https://www.cbtnuggets.com/blog/technology/networking/radio-frequencies-7-most-asked-questions-for-the-cwna"]] },
+
+{ ph:1, tier:"mid", t:"EIRP — what actually leaves the antenna", time:"4 min",
+  body:`<p>A transmitter's power isn't what leaves the antenna. The signal loses some in the cable/connectors, then gains some as the antenna focuses it. The real radiated power is <strong>EIRP — Equivalent Isotropically Radiated Power.</strong></p>
+  <p style="font-family:monospace;color:#7fe7ff;font-size:16px">EIRP = Tx power − cable/connector loss + antenna gain</p>
+  <p>All in the dB world, so it's simple add/subtract. Example: 20 dBm radio − 3 dB cable + 6 dBi antenna = <strong>23 dBm EIRP</strong>. This matters for coverage <em>and</em> is the number regulators cap, so it's everywhere.</p>
+  <figure>${SVG.eirp}<figcaption>Subtract what the cable steals, add what the antenna focuses.</figcaption></figure>`,
+  lock:"EIRP = Tx power − cable loss + antenna gain. The actual power radiated, and the figure regulators cap. Pure dB addition.",
+  q:"A 25 dBm radio loses 4 dB in cabling and feeds a 9 dBi antenna. What's the EIRP?",
+  a:"30 dBm. 25 − 4 + 9 = 30 dBm. (30 dBm = 1 watt, a common regulatory ceiling.)",
+  links:[["read","EIRP &amp; link budgets","https://www.nextantennas.com/article_3_db_dbm_dbi.php"]] },
+
+{ ph:1, tier:"mid", t:"RF math — watts, milliwatts &amp; dBm", time:"5 min",
+  body:`<p class="lead">Now you apply the 3s-and-10s rule to real power numbers, where the marks live.</p>
+  <p>Power is in <strong>watts (W)</strong>, but Wi-Fi runs tiny, so we use <strong>milliwatts (mW)</strong>. The anchor: <em>0 dBm = 1 mW</em>. Every +10 dB ×10 the mW, every +3 dB doubles it.</p>
+  <figure>${SVG.mwdbm}<figcaption>Climb the ladder with 10s and 3s. The conversion the exam leans on.</figcaption></figure>
+  <p>Worked example: 200 mW = 100 × 2. 100 mW is +20 dBm, ×2 is +3 dB. So 200 mW = <strong>23 dBm</strong>. No calculator, just steps.</p>
+  <div class="calc">100 mW = 20 dBm  <span class="d">(×10 ×10)</span><br>200 mW = 23 dBm  <span class="d">(+3 doubles it)</span><br>1 W = 1000 mW = 30 dBm  <span class="d">(×10 ×10 ×10)</span></div>`,
+  lock:"0 dBm = 1 mW. +10 dB ×10 the mW, +3 dB doubles them. 30 dBm = 1 watt.",
+  q:"Convert 40 mW to dBm.",
+  a:"16 dBm. 40 = 10 × 2 × 2 → 10 dBm, +3 (×2) = 13, +3 (×2) = 16 dBm." },
+
+{ ph:1, tier:"hard", t:"Free space path loss", time:"5 min",
+  body:`<p>A signal loses power just by travelling through empty air. That's <strong>Free Space Path Loss (FSPL)</strong>, the biggest loss in most links.</p>
+  <p>Two drivers: <em>distance</em> and <em>frequency</em> — both up means more loss. The shortcut is the <strong>6 dB rule</strong>: double the distance, lose ~6 dB. Loss is brutal early, gentler later.</p>
+  <figure>${SVG.fspl}<figcaption>Signal falls off fast at first — why APs need to be reasonably close.</figcaption></figure>
+  <p>You won't compute the full formula by hand, but know the relationship: <em>higher frequency loses more over the same distance.</em> That's the deep reason 6 GHz needs APs closer than 2.4 GHz.</p>`,
+  lock:"FSPL = power lost just crossing distance. More distance and more frequency both mean more loss. Double distance ≈ −6 dB.",
+  q:"Two identical APs, one 2.4 GHz one 5 GHz, same distance. Which delivers more signal?",
+  a:"The 2.4 GHz AP. Lower frequency means less free space path loss over the same distance, so more signal survives the trip." },
+
+{ ph:1, tier:"hard", t:"The link budget", time:"6 min",
+  body:`<p>Where it all comes together. A <strong>link budget</strong> adds every gain and subtracts every loss from transmitter to receiver, to see what actually arrives.</p>
+  <p>Start with EIRP, subtract path loss → <em>received signal</em>. Compare that to the radio's <strong>receiver sensitivity</strong> — the weakest signal it can still use for a given data rate.</p>
+  <figure>${SVG.link}<figcaption>EIRP minus path loss = what arrives. The gap above sensitivity is your margin.</figcaption></figure>
+  <p>The gap between received signal and sensitivity is the <strong>fade margin</strong> — your headroom. If a wall, rain, or a body soaks up more than that, the link drops. Good Wi-Fi design is really designing enough fade margin to survive the real world.</p>`,
+  lock:"Link budget = EIRP − path loss = received signal. Fade margin = received − sensitivity = headroom before failure.",
+  q:"A client receives −68 dBm; its sensitivity for that rate is −82 dBm. Fade margin, and is it healthy?",
+  a:"14 dB (−68 minus −82). Healthy — the signal can drop 14 dB from interference or obstacles before the link fails." },
+
+/* ---------- PHASE 2 · THE HARD LAYER (14–20) ---------- */
+{ ph:2, tier:"hard", t:"Antenna types &amp; when to use them", time:"5 min",
+  body:`<p>An antenna doesn't add power — it <em>focuses</em> what you have, like a torch reflector. More focus = further reach but narrower coverage. Three families:</p>
+  <ul>
+    <li><strong>Omnidirectional</strong> — radiates all around horizontally (doughnut shape). General coverage; an AP mid-office. Lowest gain.</li>
+    <li><strong>Semi-directional</strong> (patch, panel, Yagi) — pushes energy one general way. A corridor, or a medium-range building-to-building link.</li>
+    <li><strong>Highly directional</strong> (parabolic dish, grid) — a tight beam. Long-range point-to-point between fixed spots. Highest gain, narrowest beam.</li>
+  </ul>
+  <figure>${SVG.ant}<figcaption>Choosing an antenna is choosing a shape of coverage, not an amount of power.</figcaption></figure>`,
+  lock:"Omni = all-around, low gain. Semi-directional = aimed at an area. Highly directional = tight long-range beam. Gain comes from focus, not amplification.",
+  q:"Link two buildings 2 km apart, line of sight. Which antenna family?",
+  a:"Highly directional (parabolic dish) at each end. The tight high-gain beam carries the distance for a fixed point-to-point link." },
+
+{ ph:2, tier:"hard", t:"Beamwidth, gain &amp; polarisation", time:"5 min",
+  body:`<p>Three antenna properties the exam connects.</p>
+  <p><strong>Beamwidth</strong> = how wide the useful beam is, measured as the angle between the <em>half-power (−3 dB) points</em>, horizontal and vertical. The link to remember: <em>higher gain = narrower beamwidth.</em> Focusing tighter is what raises gain.</p>
+  <figure>${SVG.beam}<figcaption>Beamwidth is measured where signal drops to half power (−3 dB) either side of centre.</figcaption></figure>
+  <p><strong>Polarisation</strong> = the orientation of the wave (usually vertical or horizontal). Both antennas in a link must match, or you suffer big <em>cross-polarisation loss</em>. On site, mismatched polarisation is a classic "why is this link rubbish" cause.</p>`,
+  lock:"Beamwidth = angle between −3 dB edges. Higher gain → narrower beam. Polarisation must match both ends or you lose signal.",
+  q:"An antenna's gain is increased. What happens to beamwidth, and why?",
+  a:"It narrows. Gain comes from focusing the same energy into a tighter beam, so more gain means a narrower beamwidth — no free power, just concentration." },
+
+{ ph:2, tier:"hard", t:"Diversity, MIMO &amp; spatial streams", time:"6 min",
+  body:`<p>Remember multipath? Modern Wi-Fi turned that problem into a feature.</p>
+  <ul>
+    <li><strong>Antenna diversity</strong> — two antennas; use whichever hears the client better. Cheap, effective against multipath fading.</li>
+    <li><strong>MIMO</strong> — multiple antennas send/receive several independent data streams <em>at once</em>, using the multipath routes as separate lanes. Each lane is a <strong>spatial stream</strong>. More streams = more throughput. Notation "2×2:2" or "4×4:4" = transmit × receive : streams.</li>
+    <li><strong>Beamforming</strong> — shapes a stronger lobe toward a specific client.</li>
+  </ul>
+  <p><strong>MU-MIMO</strong> (multi-user) lets an AP talk to several clients at once instead of one at a time — a big reason newer Wi-Fi is faster in crowds.</p>`,
+  lock:"Diversity = pick best antenna. MIMO = simultaneous spatial streams using multipath as lanes (more streams = more speed). Beamforming = aim at client. MU-MIMO = serve several clients at once.",
+  q:"What does the third number in '3×3:3' tell you?",
+  a:"The number of spatial streams — 3. Format is transmit × receive : streams, and the streams are what multiply throughput." },
+
+{ ph:2, tier:"hard", t:"Spread spectrum — DSSS to OFDMA", time:"5 min",
+  body:`<p>How does data ride the RF? Through <strong>spread spectrum</strong>, which has evolved a lot.</p>
+  <ul>
+    <li><strong>DSSS</strong> — the old way (original 802.11 and 11b). Slow by today's standards.</li>
+    <li><strong>OFDM</strong> — the big leap (11a/g/n/ac). Splits the channel into many small <em>subcarriers</em> carrying data in parallel. Efficient and resilient — the backbone of modern Wi-Fi.</li>
+    <li><strong>OFDMA</strong> — the 11ax (Wi-Fi 6) upgrade. Groups subcarriers into <strong>resource units</strong> so the AP serves <em>several clients in one transmission</em>. Brilliant for lots of small devices.</li>
+  </ul>
+  <p>One line: DSSS (one user, slow) → OFDM (one user, fast, parallel) → OFDMA (many users share a transmission).</p>`,
+  lock:"DSSS = old/slow. OFDM = parallel subcarriers, the modern backbone. OFDMA (Wi-Fi 6) = subcarriers in resource units so many clients share one transmission.",
+  q:"What does OFDMA add over plain OFDM?",
+  a:"It lets multiple clients share a single transmission via resource units. OFDM serves one device per transmission; OFDMA serves several at once — a big efficiency win in density." },
+
+{ ph:2, tier:"hard", t:"Modulation &amp; coding (QAM, MCS)", time:"6 min",
+  body:`<p>The lever that trades speed for reliability, tied straight back to SNR.</p>
+  <p><strong>Modulation</strong> decides how many bits each symbol carries. More bits = more speed:</p>
+  <ul>
+    <li><strong>BPSK</strong> — 1 bit (slow, robust), <strong>QPSK</strong> — 2 bits</li>
+    <li><strong>16-QAM</strong> — 4, <strong>64-QAM</strong> — 6, <strong>256-QAM</strong> (Wi-Fi 5) — 8, <strong>1024-QAM</strong> (Wi-Fi 6) — 10 bits</li>
+  </ul>
+  <figure>${SVG.qam}<figcaption>More points = more bits, but they sit closer, so they need a cleaner signal.</figcaption></figure>
+  <p>The crucial trade: higher QAM packs points closer, needing <em>higher SNR</em> to tell them apart. Weak or noisy? The radio drops to lower modulation — exactly why poor SNR means slow speeds. The <strong>MCS index</strong> bundles modulation + coding + streams into the final data rate.</p>`,
+  lock:"More bits per symbol (BPSK→…→1024-QAM) = more speed but needs higher SNR. Poor SNR forces a drop = slower. MCS index = modulation/coding/streams → data rate.",
+  q:"Why does a client far from the AP with low SNR end up on a slower data rate?",
+  a:"Low SNR can't support high-order modulation (the packed points blur in the noise), so the radio falls back to QPSK or BPSK — fewer bits per symbol, a slower but reliable rate." },
+
+{ ph:2, tier:"hard", t:"Channels, widths &amp; bonding", time:"5 min",
+  body:`<p>The bands are divided into <strong>channels</strong>, and how you use them makes or breaks a design.</p>
+  <ul>
+    <li><strong>2.4 GHz</strong> — only three non-overlapping 20 MHz channels: <em>1, 6, 11</em>. The whole budget, which is why it's congested.</li>
+    <li><strong>5 GHz</strong> — many channels, and you can <strong>bond</strong> them into 40/80/160 MHz for speed.</li>
+    <li><strong>6 GHz</strong> (Wi-Fi 6E) — even more room, ideal for wide channels.</li>
+  </ul>
+  <figure>${SVG.chan}<figcaption>Wider channels = more speed but fewer of them, and more overlap risk.</figcaption></figure>
+  <p>The bonding trade: a wider channel carries more data but uses more spectrum, leaves fewer clean channels, and is more exposed to interference. In density, narrower channels with more reuse often win. Watch <strong>DFS</strong> (yield to radar) and <strong>OBSS</strong> (overlapping BSS contending on a channel).</p>`,
+  lock:"2.4 GHz: only 1/6/11. 5/6 GHz: many channels, bondable to 40/80/160 for speed. Bonding trades width for fewer clean channels and more interference. DFS = yield to radar; OBSS = overlapping networks.",
+  q:"In high density, why might 20 MHz channels beat bonded 80 MHz ones?",
+  a:"Narrow channels give more non-overlapping channels to reuse across many APs, cutting co-channel contention. Fat 80 MHz channels are faster per link but you run out of clean channels fast." },
+
+{ ph:2, tier:"hard", t:"Bringing RF to the job", time:"4 min",
+  body:`<p>Final lesson — connect it all to what you'll do on a survey, because that's where it stops being theory.</p>
+  <p>When you walk a site with Ekahau, every number on screen is something you now understand from the inside:</p>
+  <ul>
+    <li><strong>Signal (dBm)</strong> — amplitude and the link budget in action. Weak → path loss, absorption, or distance.</li>
+    <li><strong>SNR</strong> — the gap that decides which <em>modulation</em> the client can use, and so its speed.</li>
+    <li><strong>Channel &amp; interference</strong> — co-channel contention, OBSS, bonding decisions, the 1/6/11 problem.</li>
+    <li><strong>Data rates</strong> — the live result of modulation and MCS, dropping as clients move away.</li>
+  </ul>
+  <p>That's the point of going deep on RF: when a survey shows a dead spot or slow corner, you won't just see it — you'll know <em>why</em>, and what to change. That's the difference between running the tool and understanding wireless. That's the surveyor you're becoming.</p>
+  <p>You've now done the full RF topic, start to finish. Drill the practice questions on it, and RF is genuinely yours.</p>`,
+  lock:"Every survey metric — signal, SNR, channel, data rate — is the RF you've learned, shown live. Understanding the why makes you a surveyor, not a tool operator.",
+  q:"A survey shows strong signal (−58 dBm) but slow speeds in one area. Name two things you'd check.",
+  a:"SNR (a high noise floor shrinks the gap and forces lower modulation despite strong signal) and channel/interference (co-channel contention or OBSS). Strong signal alone doesn't guarantee speed — SNR and contention do." }
+];
+
+let i = 0;
+const stage = document.getElementById("stage");
+const railfill = document.getElementById("railfill");
+const pos = document.getElementById("pos");
+const prevBtn = document.getElementById("prev");
+const nextBtn = document.getElementById("next");
+const toclist = document.getElementById("toclist");
+const phasebar = document.getElementById("phasebar");
+
+const groups = [
+  {label:"Foundations — the wave", from:0, to:5},
+  {label:"The math — dB, power, link budgets", from:6, to:12},
+  {label:"The hard layer — antennas, MIMO, modulation, channels", from:13, to:19}
+];
+groups.forEach(g=>{
+  const lab=document.createElement("div"); lab.className="grouplabel"; lab.textContent=g.label; toclist.appendChild(lab);
+  const ol=document.createElement("ol"); ol.start=g.from+1;
+  for(let n=g.from;n<=g.to;n++){
+    const li=document.createElement("li");
+    const b=document.createElement("button");
+    b.innerHTML=`<span>${L[n].t}</span>`;
+    b.onclick=()=>{ i=n; render(); document.getElementById("toc").open=false; window.scrollTo({top:0,behavior:'smooth'}); };
+    li.appendChild(b); ol.appendChild(li);
+  }
+  toclist.appendChild(ol);
+});
+
+const tierLabel={easy:"gentle",mid:"building",hard:"deep"};
+function render(){
+  const les=L[i];
+  const linkHtml = les.links ? `<div class="links">${les.links.map(([k,label,url])=>`<a href="${url}" target="_blank" rel="noopener"><span class="ic">${k==="watch"?"▶":"↗"}</span>${label}</a>`).join("")}</div>` : "";
+  stage.innerHTML=`
+    <div class="lmeta">
+      <span class="n">Lesson ${i+1} of 20</span>
+      <span class="time">${les.time}</span>
+      <span class="tier ${les.tier}">${tierLabel[les.tier]}</span>
+    </div>
+    <h2>${les.t}</h2>
+    ${les.body}
+    <div class="lock"><div class="h">Lock it in</div><p>${les.lock}</p></div>
+    <details class="check"><summary>Check yourself <span class="q">— ${les.q}</span></summary><div class="ans">${les.a}</div></details>
+    ${linkHtml}`;
+  railfill.style.width=((i+1)/L.length*100)+"%";
+  pos.textContent=`${i+1} / ${L.length}`;
+  prevBtn.disabled = i===0;
+  nextBtn.textContent = i===L.length-1 ? "RF complete ✓" : "Next lesson ›";
+  [...phasebar.children].forEach(s=>s.classList.toggle("on", +s.dataset.ph===les.ph));
+  [...toclist.querySelectorAll("button")].forEach((b,n)=>b.classList.toggle("cur",n===i));
+}
+prevBtn.onclick=()=>{ if(i>0){i--;render();window.scrollTo({top:0,behavior:'smooth'});} };
+nextBtn.onclick=()=>{ if(i<L.length-1){i++;render();window.scrollTo({top:0,behavior:'smooth'});}
+  else { stage.innerHTML=`<div class="finish"><div class="big">✓</div><h2>RF — done, start to finish.</h2><p>You went from "what is a wave" to reading a survey like an engineer. That's the whole topic. Now drill practice questions to make it exam-proof, then move to Module 2.</p></div>`; railfill.style.width="100%"; nextBtn.disabled=true; } };
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"&&i<L.length-1){i++;render();}
+  if(e.key==="ArrowLeft"&&i>0){i--;render();}
+});
+render();
+</script>
+</body>
+</html>
